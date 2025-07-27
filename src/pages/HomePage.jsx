@@ -98,80 +98,119 @@ const HomePage = () => {
     <Layout>
 
       {/* Hero Section */}
-      <section className="position-relative py-5 overflow-hidden" style={{ fontFamily: 'Poppins, sans-serif' }}>
-        {/* Floating Circles */}
-        <div className="position-absolute top-0 start-0 w-100 h-100 overflow-hidden">
-          <div className="position-absolute bg-primary rounded-circle opacity-25" style={{ width: '24rem', height: '24rem', top: '1rem', right: '2rem', animation: 'float 6s ease-in-out infinite' }}></div>
-          <div className="position-absolute bg-primary rounded-circle opacity-25" style={{ width: '16rem', height: '16rem', top: '10rem', right: '8rem', animation: 'float 7s ease-in-out infinite', animationDelay: '1s' }}></div>
-          <div className="position-absolute bg-primary rounded-circle opacity-25" style={{ width: '12rem', height: '12rem', bottom: '1rem', right: '4rem', animation: 'float 8s ease-in-out infinite', animationDelay: '3s' }}></div>
+        <section className="position-relative py-5 overflow-hidden" style={{ fontFamily: 'Poppins, sans-serif' }}>
+          {/* Floating Circles */}
+          <div className="position-absolute top-0 start-0 w-100 h-100 overflow-hidden">
 
-          <div className="position-absolute bg-primary rounded-circle opacity-25" style={{ width: '8rem', height: '8rem', top: '33%', left: '25%', animation: 'float 6s ease-in-out infinite', animationDelay: '2s' }}></div>
-          <div className="position-absolute bg-primary rounded-circle opacity-25" style={{ width: '6rem', height: '6rem', bottom: '33%', left: '5rem', animation: 'float 7s ease-in-out infinite', animationDelay: '4s' }}></div>
+            {/* ✅ These 3 right-side bubbles will show on all devices */}
+            <div className="position-absolute bg-primary rounded-circle opacity-25"
+              style={{
+                width: '24rem', height: '24rem', top: '1rem', right: '2rem',
+                animation: 'float 6s ease-in-out infinite'
+              }} />
 
-          <div className="position-absolute bg-primary rounded-circle opacity-25" style={{ width: '4rem', height: '4rem', top: '20%', left: '33%', animation: 'float 6s ease-in-out infinite', animationDelay: '1.5s' }}></div>
-          <div className="position-absolute bg-primary rounded-circle opacity-25" style={{ width: '5rem', height: '5rem', top: '76%', right: '33%', animation: 'float 8s ease-in-out infinite', animationDelay: '2.5s' }}></div>
-          <div className="position-absolute bg-primary rounded-circle opacity-25" style={{ width: '3rem', height: '3rem', bottom: '4%', left: '50%', animation: 'float 7s ease-in-out infinite', animationDelay: '3.5s' }}></div>
-        </div>
 
-        <div className="container position-relative z-1">
-          <div className="row align-items-center">
-            <div className="col-lg-6 text-start">
-              <h1 className="display-3 fw-bold mb-4">
-                ONLINE <br />
-                <span className="text-primary">EDUCATION</span>
-              </h1>
-              <h2 className="h4 fw-semibold mb-3">YOUR WAY TO KNOWLEDGE</h2>
-              <p className="lead mb-4 text-secondary">Learn anytime, from anywhere, and gain industry-ready skills with our comprehensive online courses designed by experts.</p>
+            <div className="position-absolute bg-primary rounded-circle opacity-25"
+              style={{
+                width: '12rem', height: '12rem', bottom: '1rem', right: '4rem',
+                animation: 'float 8s ease-in-out infinite', animationDelay: '3s'
+              }} />
 
-              <form className="d-flex gap-2 mb-4" onSubmit={handleSearch}>
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="form-control rounded-start-pill px-3 py-2 shadow-sm"
-                  placeholder="Search courses..."
-                  style={{ maxWidth: '280px', fontSize: '0.95rem' }}
+            {/* ❌ These bubbles are hidden on mobile (shown only on lg and up) */}
+            <div className="d-none d-lg-block position-absolute bg-primary rounded-circle opacity-25"
+              style={{
+                width: '8rem', height: '8rem', top: '33%', left: '25%',
+                animation: 'float 6s ease-in-out infinite', animationDelay: '2s'
+              }} />
+
+            <div className="d-none d-lg-block position-absolute bg-primary rounded-circle opacity-25"
+              style={{
+                width: '16rem', height: '16rem', top: '10rem', right: '8rem',
+                animation: 'float 7s ease-in-out infinite', animationDelay: '1s'
+              }} />
+
+            <div className="d-none d-lg-block position-absolute bg-primary rounded-circle opacity-25"
+              style={{
+                width: '6rem', height: '6rem', bottom: '33%', left: '5rem',
+                animation: 'float 7s ease-in-out infinite', animationDelay: '4s'
+              }} />
+
+            <div className="d-none d-lg-block position-absolute bg-primary rounded-circle opacity-25"
+              style={{
+                width: '4rem', height: '4rem', top: '20%', left: '33%',
+                animation: 'float 6s ease-in-out infinite', animationDelay: '1.5s'
+              }} />
+
+            <div className="d-none d-lg-block position-absolute bg-primary rounded-circle opacity-25"
+              style={{
+                width: '5rem', height: '5rem', top: '76%', right: '33%',
+                animation: 'float 8s ease-in-out infinite', animationDelay: '2.5s'
+              }} />
+
+            <div className="d-none d-lg-block position-absolute bg-primary rounded-circle opacity-25"
+              style={{
+                width: '3rem', height: '3rem', bottom: '4%', left: '50%',
+                animation: 'float 7s ease-in-out infinite', animationDelay: '3.5s'
+              }} />
+          </div>
+
+          <div className="container position-relative z-1">
+            <div className="row align-items-center">
+              <div className="col-lg-6 text-start">
+                <h1 className="display-3 fw-bold mb-4">
+                  ONLINE <br />
+                  <span className="text-primary">EDUCATION</span>
+                </h1>
+                <h2 className="h4 fw-semibold mb-3">YOUR WAY TO KNOWLEDGE</h2>
+                <p className="lead mb-4 text-secondary">Learn anytime, from anywhere, and gain industry-ready skills with our comprehensive online courses designed by experts.</p>
+
+                <form className="d-flex gap-2 mb-4" onSubmit={handleSearch}>
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="form-control rounded-start-pill px-3 py-2 shadow-sm"
+                    placeholder="Search courses..."
+                    style={{ maxWidth: '280px', fontSize: '0.95rem' }}
+                  />
+                  <button
+                    type="submit"
+                    className="btn btn-primary d-flex align-items-center rounded-end-pill px-4 py-2 shadow-sm"
+                  >
+                    <Search size={16} className="me-1" />
+                  </button>
+                </form>
+
+                <div className="d-flex flex-wrap gap-3">
+                  <Link
+                    to="/courses"
+                    className="btn btn-primary px-4 py-2 rounded-pill d-flex align-items-center gap-2 shadow-sm"
+                  >
+                    <Play size={16} /> LEARN MORE
+                  </Link>
+                  <Link
+                    to="/courses"
+                    className="btn btn-outline-primary px-4 py-2 rounded-pill border-primary text-primary shadow-sm"
+                  >
+                    View Courses
+                  </Link>
+                </div>
+              </div>
+
+              <div className="col-lg-6 d-none d-lg-block text-end">
+                <img
+                  src="/assets/heroman.png"
+                  alt="Professional learning online"
+                  className="img-fluid rounded-4 shadow"
+                  style={{
+                    maxWidth: "550px",
+                    marginLeft: "auto"
+                  }}
                 />
-                <button
-                  type="submit"
-                  className="btn btn-primary d-flex align-items-center rounded-end-pill px-4 py-2 shadow-sm"
-                >
-                  <Search size={16} className="me-1" />
-                </button>
-              </form>
-
-              <div className="d-flex flex-wrap gap-3">
-                <Link
-                  to="/courses"
-                  className="btn btn-primary px-4 py-2 rounded-pill d-flex align-items-center gap-2 shadow-sm"
-                >
-                  <Play size={16} /> LEARN MORE
-                </Link>
-                <Link
-                  to="/courses"
-                  className="btn btn-outline-primary px-4 py-2 rounded-pill border-primary text-primary shadow-sm"
-                >
-                  View Courses
-                </Link>
               </div>
             </div>
-
-            <div className="col-lg-6 d-none d-lg-block text-end">
-              <img
-                src="/assets/heroman.png"
-                alt="Professional learning online"
-                className="img-fluid rounded-4 shadow"
-                style={{
-                  maxWidth: "550px",
-                  marginLeft: "auto"
-                }}
-              />
-            </div>
-
           </div>
-        </div>
-      </section>
-
+        </section>
 
       {/* Stats Section */}
       <section className="py-5 bg-light" style={{ fontFamily: 'Poppins, sans-serif' }}>
