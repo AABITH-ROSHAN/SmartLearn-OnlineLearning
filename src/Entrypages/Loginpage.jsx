@@ -42,9 +42,8 @@ export default function Loginpage() {
             <h1>WELCOME</h1>
             <h2>YOUR HEADLINE NAME</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam.
+              Empower your learning journey with personalized courses, assignments, and collaboration tools.  
+              Let’s continue where you left off.
             </p>
           </div>
           <div className="geometric-shape-1"></div>
