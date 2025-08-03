@@ -1,4 +1,3 @@
-i will give my code just check whats the problem 
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
@@ -8,25 +7,32 @@ import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
+// Load env variables
 dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-// ✅ MongoDB Connection
+// ----- MongoDB Connection -----
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('✅ MongoDB connected'))
-  .catch(err => console.log('❌ MongoDB connection error:', err));
 
-// ✅ User Schema
+.then(() => console.log('✅ MongoDB connected'))
+.catch(err => {
+  console.error('❌ MongoDB connection error:', err);
+  process.exit(1); // Stop server if DB fails
+});
+
+// ----- User Schema -----
 const userSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
+  username: { type: String, required: true, unique: true }, // storing email as username
   password: { type: String, required: true }
 });
-const User = mongoose.model('Course', userSchema, 'Course');
-const resetTokens = new Map();
 
-// ✅ Email Transporter
+// Use 'users' collection as standard
+const User = mongoose.model('User', userSchema, 'users');
+const resetTokens = new Map(); // for in-memory reset tokens
+
+// ----- Email Transport -----
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -35,7 +41,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-// ✅ Signup Route
+// ----- Auth: Signup -----
 app.post('/api/signup', async (req, res) => {
   const { username, password } = req.body;
   try {
@@ -53,13 +59,12 @@ app.post('/api/signup', async (req, res) => {
   }
 });
 
-// ✅ Login Route
+// ----- Auth: Login -----
 app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
   try {
     const user = await User.findOne({ username });
     if (!user) return res.status(400).json({ message: 'User not found' });
-
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
@@ -71,49 +76,53 @@ app.post('/api/login', async (req, res) => {
 
     res.json({ token });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('Login error:', err);
+    res.status(500).json({ message: 'Server error. Please try again.' });
   }
 });
 
-// ✅ Request Reset Code
+// ----- Password Reset (Send Code) -----
 app.post('/api/request-reset', async (req, res) => {
   const { email } = req.body;
-  const user = await User.findOne({ username: email });
-  if (!user) return res.status(400).json({ message: 'User not found' });
+  try {
+    const user = await User.findOne({ username: email });
+    if (!user) return res.status(400).json({ message: 'User not found' });
 
-  const code = Math.floor(100000 + Math.random() * 900000).toString();
-  resetTokens.set(email, code);
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    resetTokens.set(email, code);
 
-  await transporter.sendMail({
-    from: process.env.EMAIL_USER,
-    to: email,
-    subject: 'Password Reset Code',
-    text: `Your password reset code is: ${code}`
-  });
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Password Reset Code',
+      text: `Your password reset code is: ${code}`
+    });
 
-  res.json({ message: 'Reset code sent to your email.' });
+    res.json({ message: 'Reset code sent to your email.' });
+  } catch (e) {
+    console.error('Email error:', e);
+    res.status(500).json({ message: 'Error sending email' });
+  }
 });
 
-// ✅ Verify Reset Code & Update Password
+// ----- Password Reset (Verify & Update) -----
 app.post('/api/verify-reset', async (req, res) => {
   const { email, code, newPassword } = req.body;
   const savedCode = resetTokens.get(email);
-
   if (code !== savedCode) return res.status(400).json({ message: 'Invalid or expired code' });
 
-  const hashed = await bcrypt.hash(newPassword, 10);
-  await User.findOneAndUpdate({ username: email }, { password: hashed });
-
-  resetTokens.delete(email);
-  res.json({ message: 'Password reset successful' });
+  try {
+    const hashed = await bcrypt.hash(newPassword, 10);
+    await User.findOneAndUpdate({ username: email }, { password: hashed });
+    resetTokens.delete(email);
+    res.json({ message: 'Password reset successful' });
+  } catch (err) {
+    console.error('Reset error:', err);
+    res.status(500).json({ message: 'Error updating password' });
+  }
 });
 
-// ✅ Protected Route
-app.get('/api/protected', verifyToken, (req, res) => {
-  res.json({ message: `Hello ${req.user.username}, you are authorized!` });
-});
-
-// ✅ Middleware: Token Verification
+// ----- Middleware: Token Verification -----
 function verifyToken(req, res, next) {
   const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(' ')[1];
@@ -126,15 +135,16 @@ function verifyToken(req, res, next) {
   });
 }
 
-// ✅ Gemini (Google AI) Chat Integration
+// ----- Protected Route -----
+app.get('/api/protected', verifyToken, (req, res) => {
+  res.json({ message: `Hello ${req.user.username}, you are authorized!` });
+});
 
-
+// ----- Gemini (Google Generative AI) Integration -----
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-
-// ✅ Use a supported model ID
 const model = genAI.getGenerativeModel({ model: "models/gemini-1.5-flash" });
 
-// ✅ (Optional Debug Route: GET All Models)
+// Optional Debug: List All Models (to verify API key and connectivity)
 app.get('/api/models', async (req, res) => {
   try {
     const models = await genAI.listModels();
@@ -144,12 +154,10 @@ app.get('/api/models', async (req, res) => {
   }
 });
 
-// ✅ Main AI Chat Endpoint
+// AI Chat Endpoint
 app.post('/api/chat', async (req, res) => {
   const { messages } = req.body;
-
   try {
-    // Format user conversation
     const content = messages.map(msg => ({
       role: msg.role,
       parts: [{ text: msg.content }]
@@ -159,15 +167,12 @@ app.post('/api/chat', async (req, res) => {
     const response = await result.response.text();
 
     res.json({ message: { role: 'assistant', content: response } });
-
   } catch (err) {
     console.error("Gemini API error:", err.message || err);
     res.status(500).json({ error: "Gemini AI request failed." });
   }
 });
 
-
-
-// ✅ Start Server
+// ----- Start Server -----
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
