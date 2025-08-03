@@ -20,7 +20,7 @@ const Instructors = () => {
       id: 2,
       name: "Sarah Johnson",
       role: "Web Development Specialist",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b332c44c?w=300&h=300&fit=crop",
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop",
       bio: "Full-stack developer and educator with expertise in modern web technologies. Previously worked at top tech companies like Google and Facebook.",
       courses: 12,
       students: 8900,
