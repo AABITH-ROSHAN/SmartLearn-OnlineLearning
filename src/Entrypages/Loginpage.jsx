@@ -54,7 +54,7 @@ export default function Loginpage() {
         <div className="form-section">
           <form className="form-container" onSubmit={handleLogin}>
             <h2>Sign in</h2>
-            <p className="form-subtitle">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+            <p className="form-subtitle">Enter your credentials to access your personalized learning dashboard.</p>
 
             {/* Email */}
             <div className="input-group">
