@@ -53,6 +53,7 @@ export default function Registerpage() {
           <form className="form-container" onSubmit={handleSignup}>
             <h2>Sign up</h2>
             <p className="form-subtitle">Create an account to get started</p>
+            <p className="form-subtitle">The server May be slow, So Please Wait until Registeration process.</p>
 
             <div className="input-group">
               <div className="input-wrapper">
