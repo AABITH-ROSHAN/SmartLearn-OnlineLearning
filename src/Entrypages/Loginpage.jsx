@@ -40,7 +40,7 @@ export default function Loginpage() {
         <div className="welcome-section">
           <div className="welcome-text">
             <h1>WELCOME</h1>
-            <h2>YOUR HEADLINE NAME</h2>
+            <h2>SmartLearn</h2>
             <p>
               Empower your learning journey with personalized courses, assignments, and collaboration tools.  
               Let’s continue where you left off.
@@ -55,6 +55,7 @@ export default function Loginpage() {
           <form className="form-container" onSubmit={handleLogin}>
             <h2>Sign in</h2>
             <p className="form-subtitle">Enter your credentials to access your personalized learning dashboard.</p>
+            <p className="form-subtitle">The server May be slow, So Please Wait until login process.</p>
 
             {/* Email */}
             <div className="input-group">
